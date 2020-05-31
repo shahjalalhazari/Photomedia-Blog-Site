@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% load crispy_forms_tags %}
+
+{% block title_block %} {{ user.username }} . Photomedia {% endblock %}
+
+{% block edit_block %}
+<style>
+    .profile {
+        margin-top: 50px;
+    }
+
+    .info .image {
+        margin-left: 100px;
+
+    }
+
+    .image img {
+        width: 180px;
+        height: 180px;
+    }
+
+    .vl {
+        height: 180px;
+        width: 1px;
+        margin-left: -125px;
+        background-color: #aaa;
+    }
+
+    .post-text {
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+
+    .text {
+        margin-top: -190px;
+        margin-left: 380px;
+    }
+
+    .most_recent_blog {
+        padding-top: 50px;
+        padding-bottom: 100px;
+    }
+
+    .blog-image img {
+        width: 362px;
+        height: 262px;
+    }
+
+    .edit-delete {
+        margin-top: 15px;
+    }
+</style>
+{% endblock %}
+
+
+{% block body_block %}
+<div class="container profile">
+    <!--User Profile-->
+    <div class="row info">
+
+        <div class="col-sm-4 image">
+            {% if user.user_profile %}
+            <img src="/media/{{ user.user_profile.profile_pic }}" alt="{{ user.username }}" title="{{ user.username }}"
+                class="rounded-circle">
+            {% else %}
+            <img src="/media/profile_pics/avatar.png" title="Add Profile Photo" class="rounded-circle">
+            {% endif %}
+        </div>
+
+        <div class="vl"></div>
+
+        <div class="col-sm-8 text">
+            <h2>{{ user.username }}</h2>
+            <h6 class="post-text"><strong>{{ user.blog_author.count }}</strong> Blogs</h6>
+            <div class="full-name">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+            </div>
+            <br>
+            <a href="{% url 'account:edit_profile' %}" class="btn btn-light btn-md">Edit Profile</a> &nbsp; <a
+                href="{% url 'account:logout' %}" class="btn btn-danger btn-md">Logout</a>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <!--User Blogs-->
+    <div class="most_recent_blog">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="section_title mb-33">
+                        <h3>My Blogs</h3>
+                    </div>
+                </div>
+
+                <!--All Blogs-->
+                <div class="col-xl-12 col-md-12">
+                    <div class="row">
+                        {% for blog in user.blog_author.all %}
+                        <div class="col-xl-4 col-md-4">
+                            <div class="single_blog">
+                                <div class="blog_thumb blog-image">
+                                    <a href="{% url 'blog:full_blog' slug=blog.slug %}">
+                                        <img src="/media/{{ blog.image }}" alt="{{ blog.title }}"
+                                            title="{{ blog.title }}">
+                                    </a>
+                                </div>
+                                <div class="blog_meta">
+                                    <p><a href="{% url 'blog:category' cat_id=blog.category.id %}">{{ blog.category }}</a> |
+                                        {{ blog.publish | date:"d M, G:i"}}</p>
+                                    </p>
+                                    <h3><a
+                                            href="{% url 'blog:full_blog' slug=blog.slug %}">{{ blog.title | title_filter }}</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

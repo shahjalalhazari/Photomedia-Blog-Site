@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title_block %} Write Blog . Photomedia {% endblock %}
+
+{% block body_block %}
+<div class="" style="padding-top: 100px; padding-bottom: 100px;">
+    <h1>Write Your Blog:</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form | crispy }}
+        {% csrf_token %}
+        <br>
+        <button type="submit" class="btn btn-primary btn-md">Publish</button>
+    </form>
+    <br>
+    <h5>If you can't find your Category <a href="{% url 'blog:create_category' %}" style="color: #ff0000;">Click Here</a></h5>
+</div>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block title_block %} Photomedia {% endblock %}
+
+{% block edit_block %}
+
+<style>
+    .see-more {
+        background-color: black;
+    }
+
+    .cats-img {
+        width: 264px;
+        height: 175px;
+    }
+
+    .blog-img {
+        width: 362px;
+        height: 262px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 100%;
+    }
+</style>
+
+{% endblock %}
+
+
+{% block body_block %}
+<!-- welcome_protomedia_start -->
+<div class="welcome_protomedia">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-md-6">
+                <h3>Welcome to Photomedia <br>
+                    photography blog</h3>
+            </div>
+            <div class="col-xl-6 col-md-6">
+                <div class="add_here">
+                    <a href="#">
+                        <img src="{% static 'img/add/add.jpg' %}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- welcome_protomedia_end -->
+
+<!-- photography_slider_area_start -->
+<div class="photography_slider_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="photoslider_active owl-carousel">
+                    {% for category in categorys %}
+                    <div class="single_photography">
+                        <img src="/media/{{ category.image }}" alt="{{ category.name }}" class="cats-img">
+                        <div class="photo_title">
+                            <h4><a href="{% url 'blog:category' cat_id=category.id %}">{{ category.name }}</a></h4>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- photography_slider_area_end -->
+
+<!-- most_recent_blog_start -->
+<div class="most_recent_blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title mb-33">
+                    <h3>Most Recent</h3>
+                </div>
+            </div>
+            <div class="col-xl-8 col-md-8">
+                <div class="row">
+                    {% for blog in blogs %}
+                    <div class="col-xl-6 col-md-6">
+                        <div class="single_blog">
+                            <div class="blog_thumb">
+                                <a href="{% url 'blog:full_blog' slug=blog.slug %}">
+                                    <img src="/media/{{ blog.image }}" alt="{{ blog.title }}" title="{{ blog.title }}"
+                                        class="blog-img">
+                                </a>
+                            </div>
+
+                            <div class="blog_meta">
+                                <p><a href="{% url 'account:other_user' username=blog.author %}">By {{ blog.author }}</a> On {{ blog.publish }}</p>
+                                <h3><a href="{% url 'blog:full_blog' slug=blog.slug %}">{{ blog.title | title_filter }}</a></h3>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-xl-12">
+                        <div class="btn_area text-center">
+                            <a href="{% url 'blog:blogs' %}" class="boxed-btn">See More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!--Facebook Page/Account-->
+            <div class="col-xl-4 col-md-4">
+                <div class="blog_right_side">
+                    <div class="section_title mb-33">
+                        <h3>Follow Us</h3>
+                    </div>
+                    <div class="foollow_links">
+                        <div class="fb-page" data-href="https://www.facebook.com/thechallengerstube/" data-tabs=""
+                            data-width="" data-height="" data-small-header="true" data-adapt-container-width="true"
+                            data-hide-cover="true" data-show-facepile="true">
+                            <blockquote cite="https://www.facebook.com/thechallengerstube/"
+                                class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/thechallengerstube/">The
+                                    Challengers Tube</a></blockquote>
+                        </div>
+                        <br>
+                    </div>
+<!--Google Ad-->
+                    <div class="add_here text-center">
+                        <a href="#">
+                            <img src="{% static 'img/most_recent/googleAdd.jpg' %}" alt="">
+                        </a>
+                    </div>
+<!--Category List-->
+                    <div class="section_title mb-33">
+                        <h3>Categorys</h3>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                            {% for category in categorys %}
+                            <li><a href="{% url 'blog:category' cat_id=category.id %}">{{ category.name }}</a></li>
+                            {% endfor %}
+                            <li class="see-more"><a href="{% url 'blog:categories' %}">See More</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- most_recent_blog_end -->
+
+<!-- instagram_media_area_start -->
+<div class="instagram_media_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="instagram_title text-center">
+                    <i class="fa fa-instagram"></i>
+                    <h3>@shajalalhazari1</h3>
+                </div>
+            </div>
+        </div>
+        <div class="elfsight-app-85dafef5-741f-47f2-8cb6-c636b98df354"></div>
+    </div>
+</div>
+</div>
+<!-- instagram_media_area_end -->
+
+{% endblock %}

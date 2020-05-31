@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+{% load crispy_forms_tags %}
+
+{% block title_block %} {{ blog.title }} . Photomedia {% endblock %}
+
+{% block edit_block %}
+<style>
+   .edit-delete {
+      align-content: right;
+   }
+</style>
+{% endblock %}
+
+{% block body_block %}
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section-padding">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-12 posts-list">
+            <div class="single-post">
+               <div class="feature-img">
+                  <img class="img-fluid" src="/media/{{ blog.image }}" alt="{{ blog.title }}" title="{{ blog.title }}"
+                     height="400px" width="100%">
+               </div>
+               <div class="blog_details" style="text-align: justify;">
+                  <h1>{{ blog.title }}</h1>
+                  <ul class="blog-info-link mt-3 mb-4">
+                     <li><a href="{% url 'account:other_user' username=blog.author %}"><i class="fa fa-user"></i>{{ blog.author }}</a></li>
+                     <li><a href="{% url 'blog:category' cat_id=blog.category.id %}"><i
+                              class="fa fa-hashtag"></i>{{ blog.category }}</a></li>
+                     <li><i class="fa fa-upload"></i>{{ blog.publish }}</li>
+                     <li><i class="fa fa-edit"></i>{{ blog.update }}</li>
+                     {% if not liked %}
+                     <li><a href="{% url 'blog:like' pk=blog.pk %}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                        {{ blog.blog_like.count }} Likes</li>
+                     {% else %}
+                     <li><a href="{% url 'blog:unlike' pk=blog.pk %}"><i class="fa fa-heart" aria-hidden="true"
+                              style="color: red;"></i></a> {{ blog.blog_like.count }} Likes</li>
+                     {% endif %}
+                     <li><i class="fa fa-comments"></i> {{ blog.blog_comment.count }} Comments</li>
+                  </ul>
+                  <p class="excert">{{ blog.body | linebreaks }}</p>
+               </div>
+            </div>
+            <div class="navigation-top">
+               <div class="d-sm-flex justify-content-between text-center">
+                  {% if not liked %}
+                  <p><a href="{% url 'blog:like' pk=blog.pk %}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                     {{ blog.blog_like.count}} Likes</p>
+                  {% else %}
+                  <p><a href="{% url 'blog:unlike' pk=blog.pk %}"><i class="fa fa-heart" aria-hidden="true"
+                           style="color: red;"></i></a> {{ blog.blog_like.count}} Likes</p>
+                  {% endif %}
+                  {% if editable %}
+                  <div class="edit-delete">
+                     <a href="{% url 'blog:edit_blog' slug=blog.slug %}" class="btn btn-info btn-md"><span style="color: #fff;">Edit</span></a> &nbsp; <a
+                        href="{% url 'blog:delete_blog' slug=blog.slug %}" class="btn btn-danger btn-md"><span style="color: #fff;">Delete</span></a>
+                  </div>
+                  {% endif %}
+               </div>
+               <hr>
+               <br>
+            </div>
+         </div>
+         <div class="col-sm-6" style="padding-right: 30px; text-align: justify;">
+            <h1>Comments</h1>
+            <p><i class="fa fa-comments"></i> {{ blog.blog_comment.count }} Comments</p>
+            <hr>
+            {% for comment in blog.blog_comment.all %}
+            <h5 class="comment">{{ comment.comment }}</h5>
+            <p><a href="{% url 'account:other_user' username=comment.user %}"><i class="fa fa-user"></i> {{ comment.user }}</a> | {{ comment.date }}</p>
+            <hr>
+            {% endfor %}
+         </div>
+
+         <div class="col-sm-6" style="padding-left: 30px;">
+            <h1>Write Comment</h1>
+            <form action="" method="POST">
+               {{ form | crispy }}
+               {% csrf_token %}
+               <button type="submit" class="btn btn-success btn-md">Comment</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+<!--================ Blog Area end =================-->
+
+
+
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title_block %} Edit Profile Photo . Photomedia {% endblock %}
+
+{% block edit_block %}
+<style>
+    .bg-box {
+        background-color: #f9f9f9;
+        width: 100%;
+        height: 440px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        border: 1px solid #aaa;
+    }
+
+    .elements {
+        margin-left: 240px;
+        margin-top: -420px;
+        margin-right: 25px;
+        width: 75%;
+    }
+
+    .nav-item {
+        width: 19%;
+    }
+
+    .nav-item ul {
+        height: 440px;
+        margin-top: -1px;
+        margin-left: -1px;
+        border: solid 1px #aaa;
+    }
+
+    .nav-item ul li {
+        margin-top: -1px;
+        margin-left: -1px;
+        width: 101%;
+        height: 60px;
+        padding-left: 25px;
+        padding-top: 18px;
+        border: solid 1px #aaa;
+    }
+</style>
+
+{% endblock %}
+
+{% block body_block %}
+
+
+{% if changed %}
+<div class="alert alert-success">
+    <p>Profile Saved</p>
+</div>
+{% endif %}
+
+
+<div class="bg-box">
+    <div class="nav-item">
+        <ul>
+            <li>
+                <a href="{% url 'account:edit_profile' %}">Edit Profile</a>
+            </li>
+            {% if user.user_profile %}
+            <li>
+                <a href="{% url 'account:change_photo' %}">Change Profile Photo</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'account:add_photo' %}">Change Profile Photo</a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="{% url 'account:password' %}">Change Password</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="elements">
+        <h1>Change Profile Photo:</h1>
+        {% if user.user_profile %}
+        <img src="/media/{{ user.user_profile.profile_pic }}" width="120px" height="120px" alt="{{ user.username }}"
+            class="rounded-circle">
+        {% else %}
+        <img src="/media/profile_pics/avatar.png" width="120px" height="120px" title="Add Profile Photo"
+            class="rounded-circle">
+        {% endif %}
+        <br>
+        <br>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {{ form | crispy }}
+            {% csrf_token %}
+            <br>
+            <button type="submit" class="btn btn-info btn-md">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+<!--<div class="" style="padding-top: 100px; padding-bottom: 100px;">
+    <h1>Change Profile Photo:</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form | crispy }}
+        {% csrf_token %}
+        <br>
+        <button type="submit" class="btn btn-primary btn-md">Submit</button>
+    </form>
+    <br>
+    <a href="{% url 'account:profile' %}" class="btn btn-dark btn-md">Back</a>
+</div>-->
+
+{% endblock %}

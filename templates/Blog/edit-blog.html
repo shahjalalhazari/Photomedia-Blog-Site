@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title_block %} Edit Blog . Photomedia {% endblock %}
+
+{% block body_block %}
+<div class="" style="padding-top: 100px; padding-bottom: 100px;">
+    <h1>Edit Your Blog:</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form | crispy }}
+        {% csrf_token %}
+        <br>
+        <button type="submit" class="btn btn-info btn-md">Update</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block title_block %} Categories . Photomedia {% endblock %}
+
+{% block edit_block %}
+
+<style>
+    .categories {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .category-img {
+        width: 362px;
+        height: 262px;
+    }
+</style>
+
+{% endblock %}
+
+{% block body_block %}
+<div class="most_recent_blog categories">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="section_title mb-33">
+                <h3>Categories</h3>
+            </div>
+        </div>
+
+        <!--All Blogs-->
+        <div class="col-xl-12 col-md-12">
+            <div class="row">
+                {% for category in categories %}
+                <div class="col-xl-4 col-md-4">
+                    <div class="single_blog">
+                        <div class="blog_thumb">
+                            <a href="{% url 'blog:category' cat_id=category.id %}">
+                                <img src="/media/{{ category.image }}" alt="{{ blog.title }}" title="{{ blog.title }}"
+                                    class="category-img">
+                            </a>
+                        </div>
+                        <div class="blog_meta">
+                            <p><strong>{{ category.blog_category.count }} </strong>Posts</p>
+                            <h3><a href="{% url 'blog:category' cat_id=category.id %}">{{ category.name }}</a></h3>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

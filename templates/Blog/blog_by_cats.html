@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block title_block %} {{ cats_info.name }} . Photomedia {% endblock %}
+
+{% block body_block %}
+
+<div class="most_recent_blog" style="padding-top: 100px; padding-bottom: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title mb-33">
+                    <h3>{{ cats_info.name }}</h3>
+                </div>
+            </div>
+
+        <!--All Blogs-->
+        <div class="col-xl-12 col-md-12">
+                <div class="row">
+                    {% for blog in blog_list %}
+                    <div class="col-xl-4 col-md-4">
+                        <div class="single_blog">
+                            <div class="blog_thumb">
+                                <a href="{% url 'blog:full_blog' slug=blog.slug %}">
+                                    <img src="/media/{{ blog.image }}" alt="{{ blog.title }}" title="{{ blog.title }}"
+                                        width="362px" height="262px">
+                                </a>
+                            </div>
+                            <div class="blog_meta">
+                                <p><a href="{% url 'account:other_user' username=blog.author %}"><i class="fa fa-user" style="height: 40px;"></i> {{ blog.author }}</a> |
+                                    {{ blog.publish | date:"d M, g:i A"}}</p>
+                                <h3><a href="{% url 'blog:full_blog' slug=blog.slug %}">{{ blog.title | title_filter }}</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
